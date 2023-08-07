@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"group-project/db_connection"
+	"group-project/main/auth"
 	"log"
 	"os"
 	"os/exec"
@@ -29,30 +30,7 @@ func main() {
 	clear.Run()
 
 	if menu == 1 {
-		//LOGIN
-		var username, password string
-		fmt.Print("Username: ")
-		fmt.Scan(&username)
-		fmt.Print("Password: ")
-		fmt.Scan(&password)
-
-		//clear layar console
-		clear := exec.Command("cmd", "/c", "cls")
-		clear.Stdout = os.Stdout
-		clear.Run()
-
-		query := "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?"
-		var count int
-		err = db.QueryRow(query, username, password).Scan(&count)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if count > 0 {
-			fmt.Println("Login berhasil!")
-		} else {
-			fmt.Println("Login gagal.")
-		}
+		auth.Login()
 	} else {
 		//REGISTER
 	}
