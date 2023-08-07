@@ -1,20 +1,20 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
+	"group-project/db_connection"
 	"log"
-
-	_ "github.com/go-sql-driver/mysql"
 )
 
 func main() {
-	db, err := sql.Open("mysql", "root:@tcp(127.0.0.1)/account_service")
+	//KONEKSI DATABASE
+	db, err := db_connection.ConnectDB()
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer db.Close()
 
+	//LOGIN
 	var username, password string
 	fmt.Print("Username: ")
 	fmt.Scan(&username)
