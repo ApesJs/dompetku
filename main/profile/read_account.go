@@ -1,0 +1,5 @@
+package profile
+
+func ReadAccount() {
+
+}
