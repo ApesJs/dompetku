@@ -32,6 +32,6 @@ func main() {
 	if menu == 1 {
 		auth.Login()
 	} else {
-		//REGISTER
+		fmt.Print("REGISTER")
 	}
 }
