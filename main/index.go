@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"group-project/db_connection"
 	"log"
+	"os"
+	"os/exec"
 )
 
 func main() {
@@ -21,6 +23,11 @@ func main() {
 	fmt.Print("Pilih Menu : ")
 	fmt.Scan(&menu)
 
+	//clear layar console
+	clear := exec.Command("cmd", "/c", "cls")
+	clear.Stdout = os.Stdout
+	clear.Run()
+
 	if menu == 1 {
 		//LOGIN
 		var username, password string
@@ -28,6 +35,11 @@ func main() {
 		fmt.Scan(&username)
 		fmt.Print("Password: ")
 		fmt.Scan(&password)
+
+		//clear layar console
+		clear := exec.Command("cmd", "/c", "cls")
+		clear.Stdout = os.Stdout
+		clear.Run()
 
 		query := "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?"
 		var count int
