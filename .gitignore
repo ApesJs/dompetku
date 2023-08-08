@@ -1,3 +1,5 @@
 go.mod
 go.sum
 /db_connection
+.DS_Store
+main/.DS_Store
