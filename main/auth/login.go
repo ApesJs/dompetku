@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"group-project/db_connection"
 	"group-project/helper"
+	"group-project/main/main_menu"
 	"group-project/main/profile"
 	"log"
 )
@@ -39,15 +40,8 @@ func Login() {
 	var menu int
 
 	if count > 0 {
-		fmt.Println("")
-		fmt.Println("1. My Profile")
-		fmt.Println("2. Search Profile")
-		fmt.Println("3. Transaction")
-		fmt.Println("4. History Transaction")
-		fmt.Println("5. Logout")
-		fmt.Println("")
-		fmt.Println("0. Exit")
-		fmt.Println("")
+
+		main_menu.MainMenu()
 		fmt.Print("Select Menu : ")
 		fmt.Scan(&menu)
 
