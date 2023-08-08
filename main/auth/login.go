@@ -1,19 +1,12 @@
-// auth/login.go
 package auth
 
 import (
 	"fmt"
 	"group-project/db_connection"
+	"group-project/helper"
+	"group-project/main/profile"
 	"log"
-	"os"
-	"os/exec"
 )
-
-func ClearConsole() {
-	clear := exec.Command("cmd", "/c", "cls")
-	clear.Stdout = os.Stdout
-	clear.Run()
-}
 
 func Login() {
 	// KONEKSI DATABASE
@@ -24,14 +17,18 @@ func Login() {
 	defer db.Close()
 
 	// LOGIN
-	var username, password string
+	var username string
 	fmt.Print("Username: ")
 	fmt.Scan(&username)
-	fmt.Print("Password: ")
-	fmt.Scan(&password)
+	password, err := helper.SensorPassword("Password: ")
+	if err != nil {
+		log.Fatal(err)
+	}
 
-	ClearConsole()
+	//clear layar console
+	helper.ClearConsole()
 
+	//query database
 	query := "SELECT COUNT(*) FROM users WHERE username = ? AND password = ?"
 	var count int
 	err = db.QueryRow(query, username, password).Scan(&count)
@@ -39,9 +36,54 @@ func Login() {
 		log.Fatal(err)
 	}
 
+	var menu int
+
 	if count > 0 {
-		fmt.Println("Login berhasil!")
+		fmt.Println("")
+		fmt.Println("1. My Profile")
+		fmt.Println("2. Search Profile")
+		fmt.Println("3. Transaction")
+		fmt.Println("4. History Transaction")
+		fmt.Println("5. Logout")
+		fmt.Println("")
+		fmt.Println("0. Exit")
+		fmt.Println("")
+		fmt.Print("Select Menu : ")
+		fmt.Scan(&menu)
+
+		helper.ClearConsole()
+
+		if menu == 1 {
+			profile.ReadAccount(username, db)
+		} else if menu == 2 {
+			fmt.Println("feature is still under development")
+		} else if menu == 3 {
+			fmt.Println("feature is still under development")
+		} else if menu == 4 {
+			fmt.Println("feature is still under development")
+		} else if menu == 5 {
+			Login()
+		}
 	} else {
-		fmt.Println("Login gagal.")
+		fmt.Println("")
+		fmt.Println("Login failed, the username or password you entered is incorrect !")
+		fmt.Println("")
+		fmt.Println("1. Login")
+		fmt.Println("2. Forgot Password")
+		fmt.Println("")
+		fmt.Println("0. Exit")
+		fmt.Println("")
+		fmt.Print("Select Menu : ")
+		fmt.Scan(&menu)
+
+		helper.ClearConsole()
+
+		if menu == 1 {
+			Login()
+		} else if menu == 2 {
+			fmt.Println("feature is still under development")
+		} else if menu == 3 {
+			fmt.Println("feature is still under development")
+		}
 	}
 }
