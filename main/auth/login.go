@@ -1,10 +1,10 @@
-// auth/login.go
 package auth
 
 import (
 	"fmt"
 	"group-project/db_connection"
 	"group-project/helper"
+	"group-project/main/profile"
 	"log"
 )
 
@@ -54,7 +54,7 @@ func Login() {
 		helper.ClearConsole()
 
 		if menu == 1 {
-			fmt.Println("feature is still under development")
+			profile.ReadAccount(username, db)
 		} else if menu == 2 {
 			fmt.Println("feature is still under development")
 		} else if menu == 3 {
