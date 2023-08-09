@@ -57,6 +57,9 @@ func Login() {
 			fmt.Println("feature is still under development")
 		} else if menu == 5 {
 			Login()
+		} else if menu == 0 {
+			fmt.Println("Exit....")
+			return
 		}
 	} else {
 		fmt.Println("")
@@ -78,6 +81,9 @@ func Login() {
 			fmt.Println("feature is still under development")
 		} else if menu == 3 {
 			fmt.Println("feature is still under development")
+		} else if menu == 0 {
+			fmt.Println("Exit....")
+			return
 		}
 	}
 }
