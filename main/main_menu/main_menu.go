@@ -12,5 +12,4 @@ func MainMenu() {
 	fmt.Println("")
 	fmt.Println("0. Exit")
 	fmt.Println("")
-	fmt.Print("Select Menu : ")
 }

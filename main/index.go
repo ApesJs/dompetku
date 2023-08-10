@@ -30,6 +30,11 @@ func main() {
 
 	if menu == 1 {
 		auth.Login()
+	} else if menu == 2 {
+		auth.Register()
+	} else if menu == 0 {
+		fmt.Println("Exit....")
+		return
 	} else {
 		//REGISTER
 	}
