@@ -7,33 +7,34 @@ import (
 	"group-project/main/main_menu"
 
 	"log"
+	"time"
 )
+
+type Users struct {
+	Username, Password, Email, Fullname  string
+	Balance                              int
+	Address, Phone_number, Date_of_birth string
+}
 
 func ReadAccount(username string, db *sql.DB) {
 	query := "SELECT username, email, fullname, balance, address, phone_number, date_of_birth FROM users WHERE username = ?"
-	var (
-		storedUsername string
-		email          string
-		fullname       string
-		balance        int
-		address        string
-		phone_number   string
-		date_of_birth  string
-	)
-	err := db.QueryRow(query, username).Scan(&storedUsername, &email, &fullname, &balance, &address, &phone_number, &date_of_birth)
+	UserData := Users{}
+	err := db.QueryRow(query, username).Scan(&UserData.Username, &UserData.Email, &UserData.Fullname, &UserData.Balance, &UserData.Address, &UserData.Phone_number, &UserData.Date_of_birth)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	formattedBalance := "Rp " + helper.FormatRupiah(balance)
+	formattedBalance := "Rp " + helper.FormatRupiah(UserData.Balance)
+	formatedPhoneNumber := helper.FormatPhoneNumber(UserData.Phone_number)
+	formattedDateOfBirth := helper.FormatDateOfBirth(UserData.Date_of_birth)
 
-	fmt.Printf("%-15s: %s\n", "Username", storedUsername)
-	fmt.Printf("%-15s: %s\n", "Email", email)
-	fmt.Printf("%-15s: %s\n", "Full Name", fullname)
+	fmt.Printf("%-15s: %s\n", "Username", UserData.Username)
+	fmt.Printf("%-15s: %s\n", "Email", UserData.Email)
+	fmt.Printf("%-15s: %s\n", "Full Name", UserData.Fullname)
 	fmt.Printf("%-15s: %s\n", "Balance", formattedBalance)
-	fmt.Printf("%-15s: %s\n", "Address", address)
-	fmt.Printf("%-15s: %s\n", "Phone Number", phone_number)
-	fmt.Printf("%-15s: %s\n", "Date of Birth", date_of_birth)
+	fmt.Printf("%-15s: %s\n", "Address", UserData.Address)
+	fmt.Printf("%-15s: %s\n", "Phone Number", formatedPhoneNumber)
+	fmt.Printf("%-15s: %s\n", "Date of Birth", formattedDateOfBirth)
 
 	var menu int
 	fmt.Println("")
@@ -49,7 +50,7 @@ func ReadAccount(username string, db *sql.DB) {
 	helper.ClearConsole()
 
 	if menu == 1 {
-		fmt.Println("EDIT COMMING SOON")
+		UpdateAccount(username, db)
 	} else if menu == 2 {
 		DeleteAccount(username, db)
 	} else if menu == 3 {
@@ -57,9 +58,15 @@ func ReadAccount(username string, db *sql.DB) {
 		fmt.Print("Select Menu : ")
 		fmt.Scan(&menu)
 
+		helper.ClearConsole()
+
 		if menu == 1 {
 			ReadAccount(username, db)
 		}
+	} else if menu == 0 {
+		fmt.Println("Exit....")
+		time.Sleep(2 * time.Second)
+		helper.ClearConsole()
 	}
 
 }

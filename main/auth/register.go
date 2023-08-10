@@ -38,23 +38,23 @@ func Register() {
 
 	newUser := User{}
 	fmt.Print("Input Username:")
-	fmt.Scanln(&newUser.Username) //jika mau menggunakan spasi menggunakan bufio
+	fmt.Scan(&newUser.Username)
 	fmt.Print("input Password:")
-	fmt.Scanln(&newUser.Password)
+	fmt.Scan(&newUser.Password)
 	fmt.Print("input Email:")
-	fmt.Scanln(&newUser.Email)
+	fmt.Scan(&newUser.Email)
 	fmt.Print("input Fullname:")
-	fmt.Scanln(&newUser.Fullname)
+	fmt.Scan(&newUser.Fullname)
 	fmt.Print("input balance:")
-	fmt.Scanln(&newUser.Balance)
+	fmt.Scan(&newUser.Balance)
 	fmt.Print("input profile picture:")
-	fmt.Scanln(&newUser.Profile_picture)
+	fmt.Scan(&newUser.Profile_picture)
 	fmt.Print("input Address:")
-	fmt.Scanln(&newUser.Address)
+	fmt.Scan(&newUser.Address)
 	fmt.Print("input Phone Number:")
-	fmt.Scanln(&newUser.Phone_number)
+	fmt.Scan(&newUser.Phone_number)
 	fmt.Print("input date of birth:")
-	fmt.Scanln(&newUser.Date_of_birth)
+	fmt.Scan(&newUser.Date_of_birth)
 
 	statement, errPrepare := db.Prepare("INSERT INTO users (Username, Password, Email, Fullname, Balance, Profile_picture, Address, Phone_number, Date_of_birth) VALUES(?,?,?,?,?,?,?,?,?)")
 	if errPrepare != nil {

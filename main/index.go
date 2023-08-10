@@ -5,20 +5,13 @@ import (
 	"group-project/db_connection"
 	"group-project/helper"
 	"group-project/main/auth"
-	"log"
+  "time"
 )
 
 func main() {
-	//KONEKSI DATABASE
-	db, err := db_connection.ConnectDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
+	helper.ClearConsole()
 	//MENU
 	var menu int
-
 	fmt.Println("")
 	fmt.Println("1. Login")
 	fmt.Println("2. Register")
@@ -34,7 +27,8 @@ func main() {
 		auth.Register()
 	} else if menu == 0 {
 		fmt.Println("Exit....")
-		return
+		time.Sleep(2 * time.Second)
+		helper.ClearConsole()
 	} else {
 		//REGISTER
 	}

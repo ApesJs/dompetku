@@ -7,6 +7,7 @@ import (
 	"group-project/main/main_menu"
 	"group-project/main/profile"
 	"log"
+	"time"
 )
 
 func Login() {
@@ -19,6 +20,9 @@ func Login() {
 
 	// LOGIN
 	var username string
+	fmt.Println("")
+	fmt.Println("Enter your username and password")
+	fmt.Println("")
 	fmt.Print("Username: ")
 	fmt.Scan(&username)
 	password, err := helper.SensorPassword("Password: ")
@@ -57,6 +61,10 @@ func Login() {
 			fmt.Println("feature is still under development")
 		} else if menu == 5 {
 			Login()
+		} else if menu == 0 {
+			fmt.Println("Exit....")
+			time.Sleep(2 * time.Second)
+			helper.ClearConsole()
 		}
 	} else {
 		fmt.Println("")
@@ -78,6 +86,10 @@ func Login() {
 			fmt.Println("feature is still under development")
 		} else if menu == 3 {
 			fmt.Println("feature is still under development")
+		} else if menu == 0 {
+			fmt.Println("Exit....")
+			time.Sleep(2 * time.Second)
+			helper.ClearConsole()
 		}
 	}
 }
