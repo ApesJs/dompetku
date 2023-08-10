@@ -7,6 +7,7 @@ import (
 	"group-project/main/main_menu"
 	"group-project/main/profile"
 	"log"
+	"time"
 )
 
 func Login() {
@@ -59,7 +60,8 @@ func Login() {
 			Login()
 		} else if menu == 0 {
 			fmt.Println("Exit....")
-			return
+			time.Sleep(2 * time.Second)
+			helper.ClearConsole()
 		}
 	} else {
 		fmt.Println("")
@@ -83,7 +85,8 @@ func Login() {
 			fmt.Println("feature is still under development")
 		} else if menu == 0 {
 			fmt.Println("Exit....")
-			return
+			time.Sleep(2 * time.Second)
+			helper.ClearConsole()
 		}
 	}
 }

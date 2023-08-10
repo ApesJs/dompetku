@@ -40,30 +40,59 @@ func UpdateAccount(username string, db *sql.DB) {
 
 	if answer == "Yes" || answer == "yes" {
 		if menu == 1 {
-			fmt.Println("")
-			fmt.Println("Remember !, username can only be changed once a month !")
-			fmt.Println("")
-			fmt.Print("Enter your new username : ")
-			fmt.Scan(&UpdateUser.Username)
+			for {
+				fmt.Println("")
+				fmt.Println("Remember !, username can only be changed once a month !")
+				fmt.Println("")
+				fmt.Print("Enter your new username : ")
+				fmt.Scan(&UpdateUser.Username)
 
-			//query database
-			query := "UPDATE users SET username = ? WHERE username = ?"
-			_, err := db.Exec(query, UpdateUser.Username, username)
-			if err != nil {
-				log.Fatal(err)
+				checkUsername := "SELECT COUNT(*) FROM users WHERE username = ?"
+				var count int
+				errCheckUsername := db.QueryRow(checkUsername, UpdateUser.Username).Scan(&count)
+				if errCheckUsername != nil {
+					log.Fatal(errCheckUsername)
+				}
+
+				if UpdateUser.Username == username {
+					fmt.Println("")
+					fmt.Println("The username you entered is the same !")
+					fmt.Print("Are you sure you want to keep changing your username? (Yes/No) : ")
+					fmt.Scan(&answer)
+
+					if answer == "No" || answer == "no" {
+						helper.ClearConsole()
+						ReadAccount(username, db)
+					}
+
+					helper.ClearConsole()
+				} else if count > 0 {
+					fmt.Println("")
+					fmt.Println("The username you entered is already in use, try again !")
+					time.Sleep(2 * time.Second)
+					helper.ClearConsole()
+				} else if count == 0 {
+					//query database
+					query := "UPDATE users SET username = ? WHERE username = ?"
+					_, err := db.Exec(query, UpdateUser.Username, username)
+					if err != nil {
+						log.Fatal(err)
+					}
+
+					fmt.Println("")
+					fmt.Println("Your username has been successfully updated !")
+					fmt.Println("")
+					time.Sleep(2 * time.Second)
+					helper.ClearConsole()
+					break
+				}
 			}
-
-			fmt.Println("")
-			fmt.Println("Your username has been successfully updated !")
-			fmt.Println("")
-
 		} else if menu == 2 {
 			var tryPass string
-			fmt.Println("")
-			fmt.Println("Remember !, Be careful when setting a new password !")
-			fmt.Println("")
-
 			for {
+				fmt.Println("")
+				fmt.Println("Remember !, Be careful when setting a new password !")
+				fmt.Println("")
 				fmt.Print("Enter your new password : ")
 				fmt.Scan(&UpdateUser.Password)
 				fmt.Print("re-enter password : ")
@@ -76,22 +105,73 @@ func UpdateAccount(username string, db *sql.DB) {
 					time.Sleep(2 * time.Second)
 					helper.ClearConsole()
 				} else {
-					break // Keluar dari loop jika password sesuai
+					//query database
+					query := "UPDATE users SET password = ? WHERE username = ?"
+					_, err := db.Exec(query, UpdateUser.Password, username)
+					if err != nil {
+						log.Fatal(err)
+					}
+
+					fmt.Println("")
+					fmt.Println("Your password has been successfully updated !")
+					fmt.Println("")
+
+					break
 				}
 			}
-
-			//query database
-			query := "UPDATE users SET password = ? WHERE username = ?"
-			_, err := db.Exec(query, UpdateUser.Password, username)
-			if err != nil {
-				log.Fatal(err)
-			}
-
-			fmt.Println("")
-			fmt.Println("Your password has been successfully updated !")
-			fmt.Println("")
 		} else if menu == 3 {
-			fmt.Println("")
+			for {
+				fmt.Println("")
+				fmt.Println("Remember !, change your email carefully !")
+				fmt.Println("")
+				fmt.Print("Enter your new email : ")
+				fmt.Scan(&UpdateUser.Email)
+
+				checkEmail := "SELECT COUNT(*) FROM users WHERE email = ?"
+				var count int
+				errCheckEmail := db.QueryRow(checkEmail, UpdateUser.Email).Scan(&count)
+				if errCheckEmail != nil {
+					log.Fatal(errCheckEmail)
+				}
+
+				takeMyEmail := "SELECT email FROM users WHERE username = ?"
+				var myEmail string
+				errTakeMyEmail := db.QueryRow(takeMyEmail, username).Scan(&myEmail)
+				if errTakeMyEmail != nil {
+					log.Fatal(errTakeMyEmail)
+				}
+
+				if UpdateUser.Email == myEmail {
+					fmt.Println("")
+					fmt.Println("The email you entered is the same !")
+					fmt.Print("Are you sure you want to keep changing your email? (Yes/No) : ")
+					fmt.Scan(&answer)
+
+					if answer == "No" || answer == "no" {
+						break
+					}
+
+					helper.ClearConsole()
+				} else if count > 0 {
+					fmt.Println("")
+					fmt.Println("The email you entered is already in use, try again !")
+					time.Sleep(2 * time.Second)
+					helper.ClearConsole()
+				} else if count == 0 {
+					//query database
+					query := "UPDATE users SET email = ? WHERE username = ?"
+					_, err := db.Exec(query, UpdateUser.Email, username)
+					if err != nil {
+						log.Fatal(err)
+					}
+
+					fmt.Println("")
+					fmt.Println("Your email has been successfully updated !")
+					fmt.Println("")
+
+					break
+				}
+			}
 		} else if menu == 4 {
 			fmt.Println("")
 		} else if menu == 5 {

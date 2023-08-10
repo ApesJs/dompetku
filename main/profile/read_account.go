@@ -6,6 +6,7 @@ import (
 	"group-project/helper"
 	"group-project/main/main_menu"
 	"log"
+	"time"
 )
 
 type Users struct {
@@ -61,7 +62,8 @@ func ReadAccount(username string, db *sql.DB) {
 		}
 	} else if menu == 0 {
 		fmt.Println("Exit....")
-		return
+		time.Sleep(2 * time.Second)
+		helper.ClearConsole()
 	}
 
 }

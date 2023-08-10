@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"group-project/helper"
 	"group-project/main/auth"
+	"time"
 )
 
 func main() {
@@ -26,7 +27,8 @@ func main() {
 		auth.Register()
 	} else if menu == 0 {
 		fmt.Println("Exit....")
-		return
+		time.Sleep(2 * time.Second)
+		helper.ClearConsole()
 	} else {
 		fmt.Print("Menu Tidak Ada !")
 	}
