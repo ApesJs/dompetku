@@ -6,6 +6,8 @@ import (
 	"group-project/helper"
 	"group-project/main/main_menu"
 	"group-project/main/profile"
+	"group-project/main/search_user"
+
 	"log"
 	"time"
 )
@@ -54,6 +56,7 @@ func Login() {
 		if menu == 1 {
 			profile.ReadAccount(username, db)
 		} else if menu == 2 {
+			search_user.SearchUser(db)
 			fmt.Println("feature is still under development")
 		} else if menu == 3 {
 			fmt.Println("feature is still under development")
