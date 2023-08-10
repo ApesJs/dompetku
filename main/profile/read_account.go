@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"group-project/helper"
 	"group-project/main/main_menu"
+
 	"log"
 )
 
@@ -50,7 +51,7 @@ func ReadAccount(username string, db *sql.DB) {
 	if menu == 1 {
 		fmt.Println("EDIT COMMING SOON")
 	} else if menu == 2 {
-		fmt.Println("DELETE COMMING SOON")
+		DeleteAccount(username, db)
 	} else if menu == 3 {
 		main_menu.MainMenu()
 		fmt.Print("Select Menu : ")
