@@ -15,6 +15,8 @@ func main() {
 	fmt.Println("1. Login")
 	fmt.Println("2. Register")
 	fmt.Println("")
+	fmt.Println("0. Exit")
+	fmt.Println("")
 	fmt.Print("Pilih Menu : ")
 	fmt.Scan(&menu)
 
@@ -28,7 +30,5 @@ func main() {
 		fmt.Println("Exit....")
 		time.Sleep(2 * time.Second)
 		helper.ClearConsole()
-	} else {
-		//REGISTER
 	}
 }
