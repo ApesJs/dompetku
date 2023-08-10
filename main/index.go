@@ -8,6 +8,7 @@ import (
 )
 
 func main() {
+	helper.ClearConsole()
 	//MENU
 	var menu int
 	fmt.Println("")

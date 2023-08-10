@@ -24,14 +24,16 @@ func ReadAccount(username string, db *sql.DB) {
 	}
 
 	formattedBalance := "Rp " + helper.FormatRupiah(UserData.Balance)
+	formatedPhoneNumber := helper.FormatPhoneNumber(UserData.Phone_number)
+	formattedDateOfBirth := helper.FormatDateOfBirth(UserData.Date_of_birth)
 
 	fmt.Printf("%-15s: %s\n", "Username", UserData.Username)
 	fmt.Printf("%-15s: %s\n", "Email", UserData.Email)
 	fmt.Printf("%-15s: %s\n", "Full Name", UserData.Fullname)
 	fmt.Printf("%-15s: %s\n", "Balance", formattedBalance)
 	fmt.Printf("%-15s: %s\n", "Address", UserData.Address)
-	fmt.Printf("%-15s: %s\n", "Phone Number", UserData.Phone_number)
-	fmt.Printf("%-15s: %s\n", "Date of Birth", UserData.Date_of_birth)
+	fmt.Printf("%-15s: %s\n", "Phone Number", formatedPhoneNumber)
+	fmt.Printf("%-15s: %s\n", "Date of Birth", formattedDateOfBirth)
 
 	var menu int
 	fmt.Println("")

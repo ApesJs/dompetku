@@ -20,6 +20,9 @@ func Login() {
 
 	// LOGIN
 	var username string
+	fmt.Println("")
+	fmt.Println("Enter your username and password")
+	fmt.Println("")
 	fmt.Print("Username: ")
 	fmt.Scan(&username)
 	password, err := helper.SensorPassword("Password: ")
