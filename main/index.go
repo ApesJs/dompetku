@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"group-project/db_connection"
 	"group-project/helper"
 	"group-project/main/auth"
-	"time"
+  "time"
 )
 
 func main() {
@@ -15,9 +16,7 @@ func main() {
 	fmt.Println("1. Login")
 	fmt.Println("2. Register")
 	fmt.Println("")
-	fmt.Println("0. Exit")
-	fmt.Println("")
-	fmt.Print("Select Menu : ")
+	fmt.Print("Pilih Menu : ")
 	fmt.Scan(&menu)
 
 	helper.ClearConsole()
@@ -31,6 +30,6 @@ func main() {
 		time.Sleep(2 * time.Second)
 		helper.ClearConsole()
 	} else {
-		fmt.Print("Menu Tidak Ada !")
+		//REGISTER
 	}
 }
