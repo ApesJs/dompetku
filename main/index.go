@@ -2,10 +2,9 @@ package main
 
 import (
 	"fmt"
-	"group-project/db_connection"
 	"group-project/helper"
 	"group-project/main/auth"
-  "time"
+	"time"
 )
 
 func main() {
