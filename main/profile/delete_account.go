@@ -22,28 +22,6 @@ type User struct {
 }
 
 func DeleteAccount(password string, db *sql.DB) {
-	// db, err := sql.Open("mysql", "root:1Muhammad@tcp(127.0.0.1:3306)/db_project1")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// defer db.Close()
-
-	// err = db.Ping()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
-	// db, err := db_connection.ConnectDB()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// defer db.Close()
-
-	// err = db.Ping()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-
 	targetUser := User{}
 	fmt.Print("masukkan password:")
 	fmt.Scanln(&targetUser.Password)
@@ -52,12 +30,6 @@ func DeleteAccount(password string, db *sql.DB) {
 	_, err := db.Exec(query, targetUser.Password)
 	if err != nil {
 		log.Fatal(err)
-
-		// }else if err == nil {
-		// 	success=1
-		// }
-		// if success == 1 {
-		// 	auth.Login()
 	}
 	fmt.Println("delete berhasil")
 }
