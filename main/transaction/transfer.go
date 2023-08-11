@@ -53,21 +53,18 @@ func Transfer(username string, db *sql.DB) {
 
 			sumMyBalance := myCurrentBalance - TransactionUser.Amount
 
-			// Deduct amount from sender's balance
 			updateSenderBalance := "UPDATE users SET balance = ? WHERE username = ?"
 			_, err := db.Exec(updateSenderBalance, sumMyBalance, username)
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			// Add amount to receiver's balance
 			updateReceiverBalance := "UPDATE users SET balance = balance + ? WHERE username = ?"
 			_, err = db.Exec(updateReceiverBalance, TransactionUser.Amount, TransactionUser.ReceiverID)
 			if err != nil {
 				log.Fatal(err)
 			}
 
-			// Record the transfer in transactions table
 			transactionInsert := "INSERT INTO transactions (sender_id, receiver_id, amount, transaction_type, message) VALUES(?,?,?,?,?)"
 			_, err = db.Exec(transactionInsert, TransactionUser.SenderID, TransactionUser.ReceiverID, TransactionUser.Amount, "Transfer", TransactionUser.Message)
 			if err != nil {
