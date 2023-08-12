@@ -14,6 +14,9 @@ import (
 )
 
 func Login() {
+	channelMainMenu := make(chan string)
+	// defer close(channelMainMenu)
+
 	// KONEKSI DATABASE
 	db, err := db_connection.ConnectDB()
 	if err != nil {
@@ -47,8 +50,12 @@ func Login() {
 	var menu int
 
 	if count > 0 {
+		go main_menu.MainMenu(channelMainMenu)
 
-		main_menu.MainMenu()
+		for mainmenu := range channelMainMenu {
+			fmt.Println(mainmenu)
+		}
+
 		fmt.Print("Select Menu : ")
 		fmt.Scan(&menu)
 

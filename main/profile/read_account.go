@@ -4,7 +4,8 @@ import (
 	"database/sql"
 	"fmt"
 	"group-project/helper"
-	"group-project/main/main_menu"
+	"group-project/main/search_user"
+	"group-project/main/transaction"
 
 	"log"
 	"time"
@@ -54,7 +55,7 @@ func ReadAccount(username string, db *sql.DB) {
 	} else if menu == 2 {
 		DeleteAccount(username, db)
 	} else if menu == 3 {
-		main_menu.MainMenu()
+		// main_menu.MainMenu()
 		fmt.Print("Select Menu : ")
 		fmt.Scan(&menu)
 
@@ -62,6 +63,46 @@ func ReadAccount(username string, db *sql.DB) {
 
 		if menu == 1 {
 			ReadAccount(username, db)
+		} else if menu == 2 {
+			search_user.SearchUser(db)
+		} else if menu == 3 {
+			fmt.Println("")
+			fmt.Println("1 Top Up")
+			fmt.Println("2 Transfer")
+			fmt.Println("")
+
+			fmt.Print("Select Menu : ")
+			fmt.Scan(&menu)
+
+			helper.ClearConsole()
+
+			if menu == 1 {
+				transaction.TopUp(username, db)
+			} else if menu == 2 {
+				fmt.Print("Transfer")
+			}
+		} else if menu == 4 {
+			fmt.Println("")
+			fmt.Println("1 History Top Up")
+			fmt.Println("2 History Transfer")
+			fmt.Println("")
+
+			fmt.Print("Select Menu : ")
+			fmt.Scan(&menu)
+
+			helper.ClearConsole()
+
+			if menu == 1 {
+				transaction.HistoryTopUp(username, db)
+			} else if menu == 2 {
+				fmt.Print("History Transfer")
+			}
+		} else if menu == 5 {
+			fmt.Println("auth.Login()")
+		} else if menu == 0 {
+			fmt.Println("Exit....")
+			time.Sleep(2 * time.Second)
+			helper.ClearConsole()
 		}
 	} else if menu == 0 {
 		fmt.Println("Exit....")

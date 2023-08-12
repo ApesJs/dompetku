@@ -377,15 +377,23 @@ func UpdateAccount(username string, db *sql.DB) {
 			fmt.Printf("%-15s: ", "Email")
 			fmt.Scan(&UpdateUser.Email)
 			fmt.Printf("%-15s: ", "Full Name")
-			fmt.Scan(&UpdateUser.Fullname)
-			fmt.Printf("%-15s: ", "Address")
-			scanner := bufio.NewScanner(os.Stdin)
-			for scanner.Scan() {
-				line := scanner.Text()
+			scanFullname := bufio.NewScanner(os.Stdin)
+			for scanFullname.Scan() {
+				line := scanFullname.Text()
 				if line == "." {
 					break
 				}
-				UpdateUser.Address += line + "\n"
+				UpdateUser.Fullname += line
+			}
+			UpdateUser.Fullname = strings.TrimSuffix(UpdateUser.Fullname, "\n")
+			fmt.Printf("%-15s: ", "Address")
+			scanPassword := bufio.NewScanner(os.Stdin)
+			for scanPassword.Scan() {
+				line := scanPassword.Text()
+				if line == "." {
+					break
+				}
+				UpdateUser.Address += line
 			}
 			UpdateUser.Address = strings.TrimSuffix(UpdateUser.Address, "\n")
 			fmt.Printf("%-15s: ", "Phone Number")
@@ -397,13 +405,14 @@ func UpdateAccount(username string, db *sql.DB) {
 			_, err := db.Exec(query, UpdateUser.Username, UpdateUser.Password, UpdateUser.Email, UpdateUser.Fullname, UpdateUser.Address, UpdateUser.Phone_number, UpdateUser.Date_of_birth, username)
 			if err != nil {
 				log.Fatal(err)
+			} else if err == nil {
+				fmt.Println("")
+				fmt.Println("Your profile has been successfully updated !")
+				fmt.Println("")
+				time.Sleep(2 * time.Second)
+				helper.ClearConsole()
+				ReadAccount(username, db)
 			}
-
-			fmt.Println("")
-			fmt.Println("Your profile has been successfully updated !")
-			fmt.Println("")
-			time.Sleep(2 * time.Second)
-			helper.ClearConsole()
 
 		} else if menu == 0 {
 			ReadAccount(username, db)
