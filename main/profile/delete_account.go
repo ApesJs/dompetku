@@ -32,7 +32,6 @@ func DeleteAccount(password string, db *sql.DB) {
 	_, err := db.Exec(query, targetUser.Username, targetUser.Password)
 	if err != nil {
 		log.Fatal(err)
-
 	}
 	fmt.Println("delete berhasil")
 }
