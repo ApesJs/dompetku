@@ -40,7 +40,7 @@ func Login() {
 	helper.ClearConsole()
 
 	//query database
-	query := "SELECT COUNT(*) FROM users WHERE username = ? AND password = ? AND status_delete = 0"
+	query := "SELECT COUNT(*) FROM users WHERE username = ? AND password = ? AND status_delete is null"
 	var count int
 	err = db.QueryRow(query, username, password).Scan(&count)
 	if err != nil {
@@ -79,7 +79,8 @@ func Login() {
 			if menu == 1 {
 				transaction.TopUp(username, db)
 			} else if menu == 2 {
-				fmt.Print("Transfer")
+				transaction.Transfer(username, db)
+
 			}
 		} else if menu == 4 {
 			fmt.Println("")
@@ -95,7 +96,8 @@ func Login() {
 			if menu == 1 {
 				transaction.HistoryTopUp(username, db)
 			} else if menu == 2 {
-				fmt.Print("History Transfer")
+				transaction.HistoryTransfer(username, db)
+
 			}
 		} else if menu == 5 {
 			Login()
