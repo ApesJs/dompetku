@@ -23,11 +23,13 @@ type User struct {
 
 func DeleteAccount(password string, db *sql.DB) {
 	targetUser := User{}
+	fmt.Print("masukkan username:")
+	fmt.Scanln(&targetUser.Username)
 	fmt.Print("masukkan password:")
 	fmt.Scanln(&targetUser.Password)
-	//var success int
-	query := "UPDATE users SET status_delete = 1 WHERE Password = ?"
-	_, err := db.Exec(query, targetUser.Password)
+
+	query := "UPDATE users SET status_delete = 1 WHERE username =? AND password = ?"
+	_, err := db.Exec(query, targetUser.Username, targetUser.Password)
 	if err != nil {
 		log.Fatal(err)
 	}
