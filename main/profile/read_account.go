@@ -3,9 +3,10 @@ package profile
 import (
 	"database/sql"
 	"fmt"
-	"group-project/helper"
-	"group-project/main/search_user"
-	"group-project/main/transaction"
+
+	"github.com/ApesJs/dompetku/helper"
+	"github.com/ApesJs/dompetku/main/search_user"
+	"github.com/ApesJs/dompetku/main/transaction"
 
 	"log"
 	"time"

@@ -1,12 +1,12 @@
 package auth
 
 import (
-	"group-project/db_connection"
+	"github.com/ApesJs/dompetku/db_connection"
 
 	"fmt"
 	"log"
 
-	_ "github.com/go-sql-driver/mysql" // go mod init dulu
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type User struct {

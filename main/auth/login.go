@@ -2,12 +2,13 @@ package auth
 
 import (
 	"fmt"
-	"group-project/db_connection"
-	"group-project/helper"
-	"group-project/main/main_menu"
-	"group-project/main/profile"
-	"group-project/main/search_user"
-	"group-project/main/transaction"
+
+	"github.com/ApesJs/dompetku/db_connection"
+	"github.com/ApesJs/dompetku/helper"
+	"github.com/ApesJs/dompetku/main/main_menu"
+	"github.com/ApesJs/dompetku/main/profile"
+	"github.com/ApesJs/dompetku/main/search_user"
+	"github.com/ApesJs/dompetku/main/transaction"
 
 	"log"
 	"time"

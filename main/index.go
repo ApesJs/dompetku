@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"group-project/helper"
-	"group-project/main/auth"
 	"time"
+
+	"github.com/ApesJs/dompetku/helper"
+	"github.com/ApesJs/dompetku/main/auth"
 )
 
 func main() {
