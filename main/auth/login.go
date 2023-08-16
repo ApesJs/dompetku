@@ -15,6 +15,7 @@ import (
 
 func Login() {
 	channelMainMenu := make(chan string)
+	//asdas
 	// defer close(channelMainMenu)
 
 	// KONEKSI DATABASE
