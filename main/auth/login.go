@@ -16,7 +16,6 @@ import (
 
 func Login() {
 	channelMainMenu := make(chan string)
-	// defer close(channelMainMenu)
 
 	// KONEKSI DATABASE
 	db, err := db_connection.ConnectDB()
@@ -41,7 +40,7 @@ func Login() {
 	helper.ClearConsole()
 
 	//query database
-	query := "SELECT COUNT(*) FROM users WHERE username = ? AND password = ? AND status_delete is null"
+	query := "SELECT COUNT(*) FROM users WHERE username = ? AND password = ? AND status_delete = 0"
 	var count int
 	err = db.QueryRow(query, username, password).Scan(&count)
 	if err != nil {
@@ -124,8 +123,6 @@ func Login() {
 		if menu == 1 {
 			Login()
 		} else if menu == 2 {
-			fmt.Println("feature is still under development")
-		} else if menu == 3 {
 			fmt.Println("feature is still under development")
 		} else if menu == 0 {
 			fmt.Println("Exit....")

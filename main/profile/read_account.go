@@ -3,8 +3,10 @@ package profile
 import (
 	"database/sql"
 	"fmt"
+	"sync"
 
 	"github.com/ApesJs/dompetku/helper"
+	"github.com/ApesJs/dompetku/main/main_menu"
 	"github.com/ApesJs/dompetku/main/search_user"
 	"github.com/ApesJs/dompetku/main/transaction"
 
@@ -13,30 +15,46 @@ import (
 )
 
 type Users struct {
+	RWMutex                              sync.RWMutex
 	Username, Password, Email, Fullname  string
 	Balance                              int
 	Address, Phone_number, Date_of_birth string
 }
 
-func ReadAccount(username string, db *sql.DB) {
+func (user *Users) GetUser(username string, db *sql.DB, chanUsers chan string) {
+	user.RWMutex.Lock()
 	query := "SELECT username, email, fullname, balance, address, phone_number, date_of_birth FROM users WHERE username = ?"
-	UserData := Users{}
-	err := db.QueryRow(query, username).Scan(&UserData.Username, &UserData.Email, &UserData.Fullname, &UserData.Balance, &UserData.Address, &UserData.Phone_number, &UserData.Date_of_birth)
+	err := db.QueryRow(query, username).Scan(&user.Username, &user.Email, &user.Fullname, &user.Balance, &user.Address, &user.Phone_number, &user.Date_of_birth)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	formattedBalance := "Rp " + helper.FormatRupiah(UserData.Balance)
-	formatedPhoneNumber := helper.FormatPhoneNumber(UserData.Phone_number)
-	formattedDateOfBirth := helper.FormatDateOfBirth(UserData.Date_of_birth)
+	go helper.FormatRupiah(user.Balance, chanUsers)
+	formattedBalance := <-chanUsers
 
-	fmt.Printf("%-15s: %s\n", "Username", UserData.Username)
-	fmt.Printf("%-15s: %s\n", "Email", UserData.Email)
-	fmt.Printf("%-15s: %s\n", "Full Name", UserData.Fullname)
-	fmt.Printf("%-15s: %s\n", "Balance", formattedBalance)
-	fmt.Printf("%-15s: %s\n", "Address", UserData.Address)
+	go helper.FormatPhoneNumber(user.Phone_number, chanUsers)
+	formatedPhoneNumber := <-chanUsers
+
+	go helper.FormatDateOfBirth(user.Date_of_birth, chanUsers)
+	formattedDateOfBirth := <-chanUsers
+
+	fmt.Printf("%-15s: %s\n", "Username", user.Username)
+	fmt.Printf("%-15s: %s\n", "Email", user.Email)
+	fmt.Printf("%-15s: %s\n", "Full Name", user.Fullname)
+	fmt.Printf("%-15s: %s\n", "Balance", "Rp "+formattedBalance)
+	fmt.Printf("%-15s: %s\n", "Address", user.Address)
 	fmt.Printf("%-15s: %s\n", "Phone Number", formatedPhoneNumber)
 	fmt.Printf("%-15s: %s\n", "Date of Birth", formattedDateOfBirth)
+	user.RWMutex.Unlock()
+}
+
+func ReadAccount(username string, db *sql.DB) {
+	UserData := Users{}
+	channelMainMenu := make(chan string)
+	chanUsers := make(chan string)
+	defer close(chanUsers)
+
+	go UserData.GetUser(username, db, chanUsers)
 
 	var menu int
 	fmt.Println("")
@@ -56,7 +74,11 @@ func ReadAccount(username string, db *sql.DB) {
 	} else if menu == 2 {
 		DeleteAccount(username, db)
 	} else if menu == 3 {
-		// main_menu.MainMenu()
+		go main_menu.MainMenu(channelMainMenu)
+
+		for mainmenu := range channelMainMenu {
+			fmt.Println(mainmenu)
+		}
 		fmt.Print("Select Menu : ")
 		fmt.Scan(&menu)
 

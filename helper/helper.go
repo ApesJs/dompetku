@@ -18,15 +18,23 @@ func ClearConsole() {
 	clear.Run()
 }
 
-func FormatDateOfBirth(date string) string {
+func FormatDateOfBirth(date string, chanDate chan string) {
 	t, err := time.Parse("2006-01-02", date)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return t.Format("2 January 2006")
+	chanDate <- t.Format("2 January 2006")
 }
 
-func FormatPhoneNumber(phoneNumber string) string {
+func FormatDateTime(timestamp string, chanDateTime chan string) {
+	t, err := time.Parse("2006-01-02 15:04:05", timestamp)
+	if err != nil {
+		log.Fatal(err)
+	}
+	chanDateTime <- t.Format("02 Jan 2006 15:04:05")
+}
+
+func FormatPhoneNumber(phoneNumber string, chanPhone chan string) {
 	// Menghapus semua karakter non-digit dari nomor telepon
 	phoneNumber = strings.Join(strings.FieldsFunc(phoneNumber, func(r rune) bool {
 		return !('0' <= r && r <= '9')
@@ -36,10 +44,10 @@ func FormatPhoneNumber(phoneNumber string) string {
 	formattedNumber := fmt.Sprintf("+62 %s %s %s",
 		phoneNumber[1:4], phoneNumber[4:8], phoneNumber[8:])
 
-	return formattedNumber
+	chanPhone <- formattedNumber
 }
 
-func FormatRupiah(amount int) string {
+func FormatRupiah(amount int, chanRupiah chan string) {
 	formatted := strconv.Itoa(amount)
 	var result string
 	for i := len(formatted) - 1; i >= 0; i-- {
@@ -49,7 +57,7 @@ func FormatRupiah(amount int) string {
 		}
 	}
 
-	return result
+	chanRupiah <- result
 }
 
 func SensorPassword(prompt string) (string, error) {
@@ -60,4 +68,15 @@ func SensorPassword(prompt string) (string, error) {
 		return "", err
 	}
 	return string(bytePassword), nil
+}
+
+func CloseChannels(channels ...interface{}) {
+	for _, ch := range channels {
+		switch v := ch.(type) {
+		case chan string:
+			close(v)
+		case chan int:
+			close(v)
+		}
+	}
 }

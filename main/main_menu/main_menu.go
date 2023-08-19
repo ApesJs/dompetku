@@ -15,5 +15,5 @@ func MainMenu(channelMainMenu chan string) {
 	for i := 0; i < len(mainmenu); i++ {
 		channelMainMenu <- mainmenu[i]
 	}
-	close(channelMainMenu)
+	defer close(channelMainMenu)
 }

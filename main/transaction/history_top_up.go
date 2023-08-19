@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"github.com/ApesJs/dompetku/helper"
 
@@ -20,15 +19,11 @@ type TransactionHistory struct {
 	TransactionTime string
 }
 
-func FormatDateTime(timestamp string) string {
-	t, err := time.Parse("2006-01-02 15:04:05", timestamp)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return t.Format("02 Jan 2006 15:04:05")
-}
-
 func HistoryTopUp(username string, db *sql.DB) {
+	chanRupiah := make(chan string)
+	chanDateTime := make(chan string)
+	defer helper.CloseChannels(chanRupiah, chanDateTime)
+
 	var history string
 	transactionList := []TransactionHistory{}
 
@@ -45,7 +40,8 @@ func HistoryTopUp(username string, db *sql.DB) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		transaction.TransactionTime = FormatDateTime(history)
+		go helper.FormatRupiah(transaction.Amount, chanRupiah)
+		go helper.FormatDateTime(history, chanDateTime)
 		transactionList = append(transactionList, transaction)
 	}
 
@@ -57,7 +53,7 @@ func HistoryTopUp(username string, db *sql.DB) {
 	table.SetHeader([]string{"Sender ID", "Amount", "Transaction Type", "Message", "Transaction Time"})
 
 	for _, transaction := range transactionList {
-		table.Append([]string{transaction.SenderID, fmt.Sprintf("Rp " + helper.FormatRupiah(transaction.Amount)), transaction.TransactionType, transaction.Message, transaction.TransactionTime})
+		table.Append([]string{transaction.SenderID, fmt.Sprintf("Rp " + <-chanRupiah), transaction.TransactionType, transaction.Message, <-chanDateTime})
 	}
 
 	table.Render()
