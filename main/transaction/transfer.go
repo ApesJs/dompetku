@@ -18,6 +18,8 @@ type Transactions struct {
 }
 
 func Transfer(username string, db *sql.DB) {
+	defer db.Close()
+
 	for {
 		TransactionUser := Transactions{}
 

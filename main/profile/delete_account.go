@@ -22,6 +22,7 @@ type User struct {
 }
 
 func DeleteAccount(password string, db *sql.DB) {
+	defer db.Close()
 	targetUser := User{}
 	fmt.Print("masukkan username:")
 	fmt.Scanln(&targetUser.Username)

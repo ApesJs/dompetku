@@ -2,26 +2,25 @@ package unit_testing
 
 import (
 	"fmt"
-	"sync"
 	"testing"
 )
 
-func DisplayNumber(n int, chanTes chan int) {
-	chanTes <- n
+func DisplayNumber(n int, chanN chan int) {
+	chanN <- n
 }
 func TestGorutin(t *testing.T) {
-	// chanTest := make(chan int)
-	var mutex sync.Mutex
-	var x = 0
-	for i := 1; i <= 1000; i++ {
-		go func() {
-			for j := 1; j <= 100; j++ {
-				mutex.Lock()
-				x = x + 1
-				mutex.Unlock()
-			}
-		}()
-		// chanTest <- x
+	chanN := make(chan int)
+	for i := 1; i <= 100000; i++ {
+		go DisplayNumber(i, chanN)
+		fmt.Println(<-chanN)
 	}
-	fmt.Println(x)
+}
+
+func DisplayNumber2(n int) {
+	fmt.Println(n)
+}
+func TestGorutin2(t *testing.T) {
+	for i := 1; i <= 100000; i++ {
+		go DisplayNumber2(i)
+	}
 }

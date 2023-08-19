@@ -49,6 +49,7 @@ func (user *Users) GetUser(username string, db *sql.DB, chanUsers chan string) {
 }
 
 func ReadAccount(username string, db *sql.DB) {
+	defer db.Close()
 	UserData := Users{}
 	channelMainMenu := make(chan string)
 	chanUsers := make(chan string)

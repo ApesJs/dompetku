@@ -20,6 +20,7 @@ type TransactionHistory struct {
 }
 
 func HistoryTopUp(username string, db *sql.DB) {
+	defer db.Close()
 	chanRupiah := make(chan string)
 	chanDateTime := make(chan string)
 	defer helper.CloseChannels(chanRupiah, chanDateTime)

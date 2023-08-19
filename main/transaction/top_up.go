@@ -47,6 +47,8 @@ func (transaction *Transaction) AddTransaction(db *sql.DB) {
 }
 
 func TopUp(username string, db *sql.DB) {
+	defer db.Close()
+
 	for {
 		TransactionUser := Transaction{}
 

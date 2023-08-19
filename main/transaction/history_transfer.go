@@ -7,6 +7,8 @@ import (
 )
 
 func HistoryTransfer(username string, db *sql.DB) {
+	defer db.Close()
+
 	fmt.Println("Transfer History:")
 	fmt.Println("-----------------")
 

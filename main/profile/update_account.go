@@ -18,6 +18,7 @@ func ValidateDateFormat(date string) bool {
 }
 
 func UpdateAccount(username string, db *sql.DB) {
+	defer db.Close()
 	UpdateUser := Users{}
 
 	fmt.Println("")
