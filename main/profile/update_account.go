@@ -9,6 +9,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/ApesJs/dompetku/db_connection"
 	"github.com/ApesJs/dompetku/helper"
 )
 
@@ -18,7 +19,8 @@ func ValidateDateFormat(date string) bool {
 }
 
 func UpdateAccount(username string, db *sql.DB) {
-	defer db.Close()
+	defer db_connection.PutDB(db)
+
 	UpdateUser := Users{}
 
 	fmt.Println("")

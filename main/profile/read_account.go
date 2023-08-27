@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"sync"
 
+	"github.com/ApesJs/dompetku/db_connection"
 	"github.com/ApesJs/dompetku/helper"
 	"github.com/ApesJs/dompetku/main/main_menu"
 	"github.com/ApesJs/dompetku/main/search_user"
@@ -49,7 +50,7 @@ func (user *Users) GetUser(username string, db *sql.DB, chanUsers chan string) {
 }
 
 func ReadAccount(username string, db *sql.DB) {
-	defer db.Close()
+	defer db_connection.PutDB(db)
 	UserData := Users{}
 	channelMainMenu := make(chan string)
 	chanUsers := make(chan string)

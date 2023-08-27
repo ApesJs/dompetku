@@ -25,16 +25,8 @@ type User struct {
 func Register() {
 
 	// KONEKSI DATABASE
-	db, err := db_connection.ConnectDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
-
-	err = db.Ping()
-	if err != nil {
-		log.Fatal(err)
-	}
+	db := db_connection.GetDB()
+	defer db_connection.PutDB(db)
 
 	newUser := User{}
 	fmt.Print("Input Username:")

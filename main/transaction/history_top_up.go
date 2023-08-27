@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/ApesJs/dompetku/db_connection"
 	"github.com/ApesJs/dompetku/helper"
 
 	"github.com/olekukonko/tablewriter"
@@ -20,7 +21,7 @@ type TransactionHistory struct {
 }
 
 func HistoryTopUp(username string, db *sql.DB) {
-	defer db.Close()
+	defer db_connection.PutDB(db)
 	chanRupiah := make(chan string)
 	chanDateTime := make(chan string)
 	defer helper.CloseChannels(chanRupiah, chanDateTime)

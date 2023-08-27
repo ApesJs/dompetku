@@ -1,7 +1,9 @@
 package auth
 
 import (
+	"database/sql"
 	"fmt"
+	"sync"
 
 	"github.com/ApesJs/dompetku/db_connection"
 	"github.com/ApesJs/dompetku/helper"
@@ -18,11 +20,18 @@ func Login() {
 	channelMainMenu := make(chan string)
 
 	// KONEKSI DATABASE
-	db, err := db_connection.ConnectDB()
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
+	var (
+		db *sql.DB
+		wg sync.WaitGroup
+	)
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		db = db_connection.GetDB()
+		defer db_connection.PutDB(db)
+	}()
+	wg.Wait()
 
 	// LOGIN
 	var username string

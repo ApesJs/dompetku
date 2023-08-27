@@ -7,6 +7,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/ApesJs/dompetku/db_connection"
 	"github.com/ApesJs/dompetku/helper"
 )
 
@@ -19,6 +20,7 @@ type Transaction struct {
 
 func (transaction *Transaction) AddBalance(username string, db *sql.DB) {
 	transaction.RWMutex.Lock()
+	defer db_connection.PutDB(db)
 	takeMyCurrentBalance := "SELECT balance FROM users WHERE username = ?"
 	var myCurrentBalance int
 	errTakeMyCurrentBalance := db.QueryRow(takeMyCurrentBalance, username).Scan(&myCurrentBalance)
@@ -38,6 +40,7 @@ func (transaction *Transaction) AddBalance(username string, db *sql.DB) {
 
 func (transaction *Transaction) AddTransaction(db *sql.DB) {
 	transaction.RWMutex.Lock()
+	defer db_connection.PutDB(db)
 	transactionInsert := "INSERT INTO transactions (sender_id, receiver_id, amount, transaction_type, message) VALUES(?,?,?,?,?)"
 	_, err2 := db.Exec(transactionInsert, transaction.Sender_id, transaction.Sender_id, transaction.Amount, "Top Up", transaction.Message)
 	if err2 != nil {
@@ -47,7 +50,7 @@ func (transaction *Transaction) AddTransaction(db *sql.DB) {
 }
 
 func TopUp(username string, db *sql.DB) {
-	defer db.Close()
+	defer db_connection.PutDB(db)
 
 	for {
 		TransactionUser := Transaction{}
